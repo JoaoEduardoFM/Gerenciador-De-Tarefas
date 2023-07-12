@@ -3,7 +3,6 @@ package com.br.tarefas.service;
 import java.math.BigInteger;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.br.tarefas.model.entity.UsuarioEntity;
 import com.br.tarefas.repository.UsuarioRepository;
+
 @Service
 public class UsuarioService {
 
@@ -51,7 +51,7 @@ public class UsuarioService {
 		repository.deleteById(id);
 	}
 
-	public ResponseEntity<?> atulizaParcialmente(BigInteger id, @RequestBody UsuarioEntity usuarioEntity){
+	public ResponseEntity<?> atulizaParcialmente(BigInteger id, @RequestBody UsuarioEntity usuarioEntity) {
 		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
 		if (!buscaPorId.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id informado não existe.");
