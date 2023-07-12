@@ -26,7 +26,7 @@ Retorno exemplo:
 }
 
 ## Endpoints:
-GET /usuario/buscaRegistros: Este endpoint retorna todos os usuários cadastrados, permitindo uma visualização completa da lista de usuários e suas respectivas informações.
+GET /usuario/buscaRegistros: Este endpoint retorna todos os usuários cadastrados, permitindo uma visualização completa da lista de usuários e suas respectivas informações. \n
 GET /usuario/buscaPorId/{id}: Com este endpoint, é possível buscar um usuário específico com base no seu ID. Isso permite a recuperação detalhada das informações de um usuário em particular.
 GET /usuario/buscaPorTitulo/{titulo}: Ao utilizar este endpoint, você pode buscar usuários com base no título. Isso é útil para encontrar usuários específicos que possuem um determinado título relacionado às atividades.
 GET /usuario/buscaPorDescricao/{descricao}: Aqui, é possível buscar usuários com base em uma descrição específica. Essa funcionalidade permite a localização de usuários que tenham atividades com uma determinada descrição.
