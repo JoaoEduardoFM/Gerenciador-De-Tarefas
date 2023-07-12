@@ -1,6 +1,7 @@
 package com.br.tarefas.service;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,45 @@ public class UsuarioService {
 		usuarioEntity.setId(id);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(usuarioEntity));
 
+	}
+	
+	public ResponseEntity<?> buscaPorTitulo(String titulo) {
+		Optional<List<UsuarioEntity>> buscaPorTitulo = repository.findByListaDeTarefas_Titulo(titulo);
+		if (!buscaPorTitulo.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O titulo informado não existe.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(buscaPorTitulo);
+	}
+	
+	public ResponseEntity<?> buscaPorDescricao(String descricao) {
+		Optional<List<UsuarioEntity>> buscaPorDescricao = repository.findByListaDeTarefas_Descricao(descricao);
+		if (!buscaPorDescricao.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A descrição informado não existe.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(buscaPorDescricao);
+	}
+	
+	public ResponseEntity<?> buscaPorDataConclusao(String data) {
+		Optional<List<UsuarioEntity>> buscaDataConclusao = repository.findByListaDeTarefas_DataConclusao(data);
+		if (!buscaDataConclusao.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A data informada não existe.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(buscaDataConclusao);
+	}
+	
+	public ResponseEntity<?> buscaPorStatus(Boolean status) {
+		Optional<List<UsuarioEntity>> buscaStatus = repository.findByListaDeTarefas_Status(status);
+		if (!buscaStatus.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O status informado não existe.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(buscaStatus);
+	}
+	
+	public ResponseEntity<?> buscaPorPrioridade(String prioridade) {
+		Optional<List<UsuarioEntity>> buscaPrioridade = repository.findByListaDeTarefas_Prioridade(prioridade);
+		if (!buscaPrioridade.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A prioridade informada não existe.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(buscaPrioridade);
 	}
 }
