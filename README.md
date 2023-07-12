@@ -1,6 +1,6 @@
 # Gerenciador-De-Tarefas
-Consultar cotação atualizada em Scheduled
-image
+
+![image](https://github.com/JoaoEduardoFM/Gerenciador-De-Tarefas/assets/90796699/c41aec35-7ee6-45d2-accb-76af5ac9f212)
 
 Status: Em desenvolvimento ⚠️
 
