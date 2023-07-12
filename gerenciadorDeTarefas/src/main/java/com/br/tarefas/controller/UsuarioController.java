@@ -48,7 +48,7 @@ public class UsuarioController {
 
 	@PatchMapping
 	@PutMapping("/atualizaParcialmente/{id}")
-	private ResponseEntity<?> atualizaParcialmento(@RequestBody UsuarioEntity usuarioEntity, @PathVariable BigInteger id){
+	private ResponseEntity<?> atualizaParcialmento(@RequestBody UsuarioEntity usuarioEntity, BigInteger id){
 		return usuarioService.atulizaParcialmente(id, usuarioEntity);
 	}
 }

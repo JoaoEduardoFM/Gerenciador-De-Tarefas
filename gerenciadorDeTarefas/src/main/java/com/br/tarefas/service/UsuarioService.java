@@ -51,7 +51,7 @@ public class UsuarioService {
 		repository.deleteById(id);
 	}
 
-	public ResponseEntity<?> atulizaParcialmente(@PathVariable BigInteger id, @RequestBody UsuarioEntity usuarioEntity){
+	public ResponseEntity<?> atulizaParcialmente(BigInteger id, @RequestBody UsuarioEntity usuarioEntity){
 		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
 		if (!buscaPorId.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id informado não existe.");
@@ -59,19 +59,5 @@ public class UsuarioService {
 		usuarioEntity.setId(id);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(usuarioEntity));
 
-	}
-
-	public UsuarioEntity verificaCamposPreenchidos(UsuarioEntity entity, BigInteger id) {
-		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
-		if (StringUtils.isBlank(entity.getNome())) {
-			entity.setNome(buscaPorId.get().getNome());
-		}
-		if (StringUtils.isBlank(entity.getSobrenome())) {
-			entity.setSobrenome(buscaPorId.get().getSobrenome());
-		}
-		if (StringUtils.isBlank(entity.getEmail())) {
-			entity.setEmail(buscaPorId.get().getEmail());
-		}
-		return entity;
 	}
 }
