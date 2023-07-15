@@ -35,7 +35,7 @@ public class TarefaEntity {
 	@ApiModelProperty(value = "descricao", required = false)
 	String descricao;
 
-	@ApiModelProperty(value = "dataConclusao", required = false)
+	@ApiModelProperty(example = "10102025", value = "dataConclusao", required = false)
 	String dataConclusao;
 	
 	@ApiModelProperty(example = "TRUE", value = "status", required = false)
