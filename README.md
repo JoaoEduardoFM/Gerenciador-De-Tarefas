@@ -1,6 +1,6 @@
 # Gerenciador-De-Tarefas
 
-![image](https://github.com/JoaoEduardoFM/Gerenciador-De-Tarefas/assets/90796699/c41aec35-7ee6-45d2-accb-76af5ac9f212)
+![image](https://github.com/JoaoEduardoFM/Gerenciador-De-Tarefas/assets/90796699/36a14af6-9bf7-46a8-97bb-5a9e38641358)
 
 Status: Em desenvolvimento ⚠️
 
