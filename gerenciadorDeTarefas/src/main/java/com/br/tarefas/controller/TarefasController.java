@@ -17,6 +17,7 @@ import com.br.tarefas.model.entity.TarefaEntity;
 import com.br.tarefas.service.tarefasService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/tarefas")
@@ -26,26 +27,41 @@ public class TarefasController {
 	@Autowired
 	private tarefasService tarefasSevice;
 
+	@ApiOperation(
+			value = "Buscar tarefas.", 
+			notes = "Busta todas tarefas cadastradas.")
 	@GetMapping("/buscaTarefas")
 	private ResponseEntity<?> buscaTodosRegistros() {
 		return tarefasSevice.BuscaTodosRegistro();
 	}
 
+	@ApiOperation(
+			value = "Buscar por id.", 
+			notes = "Busta por id cadastrada.")
 	@GetMapping("/buscaTarefaPorId/{id}")
 	private ResponseEntity<?> buscaPorId(@PathVariable BigInteger id) {
 		return tarefasSevice.BuscaRegistroPorId(id);
 	}
 
+	@ApiOperation(
+			value = "Cadastra Tarefa", 
+			notes = "Cadastra tarefa ao banco de dados")
 	@PostMapping("/cadastraTarefa")
 	private ResponseEntity<?> cadastraRegistro(@RequestBody TarefaEntity entity) {
 		return tarefasSevice.SalvaRegistro(entity);
 	}
 
+	@ApiOperation(
+			value = "atualiza Tarefa", 
+			notes = "atualiza tarefa ao banco de dados")
 	@PutMapping("/atualizaTarefa/{id}")
 	private ResponseEntity<?> AtualizaRegistro(@RequestBody TarefaEntity entity) {
 		return tarefasSevice.SalvaRegistro(entity);
 	}
 
+	@ApiOperation(
+			value = "deleta Tarefa", 
+			notes = "deleta tarefa do banco de dados")
 	@DeleteMapping("/deleta/{id}")
 	private void deletaRegistro(BigInteger id) {
 		tarefasSevice.DeletaRegistro(id);

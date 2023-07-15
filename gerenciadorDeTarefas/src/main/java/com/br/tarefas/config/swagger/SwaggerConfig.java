@@ -24,7 +24,7 @@ public class SwaggerConfig {
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder().title("API para gerenciamento de tarefas (JAVA)").description(
-				"Api para estudos")
+				"Esta API permite o gerenciamento de tarefas e usuários. É destinada principalmente a fins educacionais e de estudo.")
 				.version("1.0.0").build();
 	}
 }

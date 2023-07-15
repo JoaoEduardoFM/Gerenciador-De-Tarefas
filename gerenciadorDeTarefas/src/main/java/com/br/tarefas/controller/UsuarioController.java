@@ -2,6 +2,8 @@ package com.br.tarefas.controller;
 
 import java.math.BigInteger;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.br.tarefas.model.entity.TarefaEntity;
 import com.br.tarefas.model.entity.UsuarioEntity;
 import com.br.tarefas.service.UsuarioService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/usuario")
@@ -30,7 +34,7 @@ public class UsuarioController {
 
 	@ApiOperation(
 			value = "Busca usuarios.", 
-			notes = "Bista todos usuários cadastrados.")
+			notes = "Busta todos usuários cadastrados.")
 	@GetMapping("/buscaRegistros")
 	private ResponseEntity<?> buscaUsuarios() {
 		return usuarioService.buscaTodosUsuarios();
@@ -53,42 +57,46 @@ public class UsuarioController {
 	}
 	
 	@ApiOperation(
-			value = "Busca usuário pela descrição.", 
-			notes = "Busca registro pela descrição.")
-	@GetMapping("/buscaPorTitulo/{descricao}")
-	private ResponseEntity<?> buscaPorDescricao(@PathVariable String descricao) {
-		return usuarioService.buscaPorDescricao(descricao);
-	}
+            value = "Busca usuário pela descrição.",
+            notes = "Busca registro pela descrição."
+    )
+    @GetMapping("/buscaPorDescricao/{descricao}")
+    private ResponseEntity<?> buscaPorDescricao(@PathVariable String descricao) {
+        return usuarioService.buscaPorDescricao(descricao);
+    }
 	
 	@ApiOperation(
-			value = "Busca usuário pela data de conclusão.", 
-			notes = "Busca registro pela data de conclusão.")
-	@GetMapping("/buscaPorDataConclusao/{data}")
-	private ResponseEntity<?> buscaPorDataConclusao(@PathVariable String data) {
-		return usuarioService.buscaPorDataConclusao(data);
-	}
+            value = "Busca usuário pela data de conclusão.",
+            notes = "Busca registro pela data de conclusão."
+    )
+    @GetMapping("/buscaPorDataConclusao/{data}")
+    private ResponseEntity<?> buscaPorDataConclusao(@PathVariable String data) {
+        return usuarioService.buscaPorDataConclusao(data);
+    }
 	
 	@ApiOperation(
-			value = "Busca usuário pelo status.", 
-			notes = "Busca registro pelo status.")
-	@GetMapping("/buscaPorStatus/{status}")
-	private ResponseEntity<?> buscaPorStatus(@PathVariable Boolean status) {
-		return usuarioService.buscaPorStatus(status);
-	}
+            value = "Busca usuário pelo status.",
+            notes = "Busca registro pelo status."
+    )
+    @GetMapping("/buscaPorStatus/{status}")
+    private ResponseEntity<?> buscaPorStatus(@PathVariable Boolean status) {
+        return usuarioService.buscaPorStatus(status);
+    }
 	
 	@ApiOperation(
-			value = "Busca usuário pela prioridade.", 
-			notes = "Busca registro pela prioridade.")
-	@GetMapping("/buscaPorPrioridade/{prioridade}")
-	private ResponseEntity<?> buscaPorPrioridade(@PathVariable String prioridade) {
-		return usuarioService.buscaPorPrioridade(prioridade);
-	}
+            value = "Busca usuário pela prioridade.",
+            notes = "Busca registro pela prioridade."
+    )
+    @GetMapping("/buscaPorPrioridade/{prioridade}")
+    private ResponseEntity<?> buscaPorPrioridade(@PathVariable String prioridade) {
+        return usuarioService.buscaPorPrioridade(prioridade);
+    }
 
 	@ApiOperation(
 			value = "Cadastra registro.", 
 			notes = "Cadastra usuário ")
 	@PostMapping("/cadastraRegistro")
-	private ResponseEntity<?> cadastraRegistro(@RequestBody UsuarioEntity usuarioEntity) {
+	private ResponseEntity<?> cadastraRegistro(@RequestBody @Valid UsuarioEntity usuarioEntity) {
 		return usuarioService.cadastraRegistro(usuarioEntity);
 	}
 
@@ -96,16 +104,15 @@ public class UsuarioController {
 			value = "Atualiza registro.", 
 			notes = "Atualiza usuário ")
 	@PutMapping("/atualizaRegistro/{id}")
-	private ResponseEntity<?> atualizaRegistro(@RequestBody UsuarioEntity usuarioEntity, @PathVariable BigInteger id) {
+	private ResponseEntity<?> atualizaRegistro(@RequestBody @Valid UsuarioEntity usuarioEntity, @PathVariable BigInteger id) {
 		return usuarioService.atualizaRegistro(id, usuarioEntity);
 	}
 
 	@ApiOperation(
 			value = "Atualiza parcialmento registro.", 
 			notes = "Atualiza parcialmento usuário.")
-	@PatchMapping
-	@PutMapping("/atualizaParcialmente/{id}")
-	private ResponseEntity<?> atualizaParcialmento(@RequestBody UsuarioEntity usuarioEntity, BigInteger id){
+	@PatchMapping("atualizaParcialmente/{id}")
+	private ResponseEntity<?> atualizaParcialmento(@RequestBody @Valid UsuarioEntity usuarioEntity, BigInteger id){
 		return usuarioService.atulizaParcialmente(id, usuarioEntity);
 	}
 	
