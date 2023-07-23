@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.br.tarefas.model.entity.UsuarioEntity;
+import com.br.tarefas.model.response.responseModel;
 import com.br.tarefas.repository.UsuarioRepository;
+
+/**
+ * @author João
+ * @apiNote Service para manipular dados do usuário
+ */
 
 @Service
 public class UsuarioService {
@@ -22,30 +28,31 @@ public class UsuarioService {
 
 	public ResponseEntity<?> buscaTodosUsuarios() {
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
-
 	}
 
 	public ResponseEntity<?> buscaPorId(BigInteger id) {
+		responseModel response = new responseModel();
+		response.setMensagem("O id informado não existe.");
 		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
-		if (!buscaPorId.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id informado não existe.");
+		if (buscaPorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(repository.findById(id));
 	}
 
 	public ResponseEntity<?> cadastraRegistro(@RequestBody UsuarioEntity usuarioEntity) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(usuarioEntity));
-
 	}
 
 	public ResponseEntity<?> atualizaRegistro(@PathVariable BigInteger id, @RequestBody UsuarioEntity usuarioEntity) {
+		responseModel response = new responseModel();
+		response.setMensagem("O id informado não existe.");
 		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
-		if (!buscaPorId.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id informado não existe.");
+		if (buscaPorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		usuarioEntity.setId(id);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(usuarioEntity));
-
 	}
 
 	public void deletaRegistro(BigInteger id) {
@@ -53,51 +60,62 @@ public class UsuarioService {
 	}
 
 	public ResponseEntity<?> atulizaParcialmente(BigInteger id, @RequestBody UsuarioEntity usuarioEntity) {
+		responseModel response = new responseModel();
+		response.setMensagem("O id informado não existe.");
 		Optional<UsuarioEntity> buscaPorId = repository.findById(id);
-		if (!buscaPorId.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id informado não existe.");
+		if (buscaPorId.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		usuarioEntity.setId(id);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(usuarioEntity));
-
 	}
 	
 	public ResponseEntity<?> buscaPorTitulo(String titulo) {
-		Optional<List<UsuarioEntity>> buscaPorTitulo = repository.findByListaDeTarefas_Titulo(titulo);
-		if (!buscaPorTitulo.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O titulo informado não existe.");
+		responseModel response = new responseModel();
+		List<UsuarioEntity> buscaPorTitulo = repository.findByListaDeTarefas_Titulo(titulo);	
+		response.setMensagem("O titulo informado não existe.");
+		if (buscaPorTitulo.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(buscaPorTitulo);
 	}
 	
 	public ResponseEntity<?> buscaPorDescricao(String descricao) {
-		Optional<List<UsuarioEntity>> buscaPorDescricao = repository.findByListaDeTarefas_Descricao(descricao);
-		if (!buscaPorDescricao.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A descrição informado não existe.");
+		responseModel response = new responseModel();
+		response.setMensagem("A descrição informado não existe.");
+		List<UsuarioEntity> buscaPorDescricao = repository.findByListaDeTarefas_Descricao(descricao);	
+		if (buscaPorDescricao.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(buscaPorDescricao);
 	}
 	
 	public ResponseEntity<?> buscaPorDataConclusao(String data) {
-		Optional<List<UsuarioEntity>> buscaDataConclusao = repository.findByListaDeTarefas_DataConclusao(data);
-		if (!buscaDataConclusao.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A data informada não existe.");
+		responseModel response = new responseModel();
+		response.setMensagem("A data informada não existe.");
+		List<UsuarioEntity> buscaDataConclusao = repository.findByListaDeTarefas_DataConclusao(data);
+		if (buscaDataConclusao.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(buscaDataConclusao);
 	}
 	
 	public ResponseEntity<?> buscaPorStatus(Boolean status) {
-		Optional<List<UsuarioEntity>> buscaStatus = repository.findByListaDeTarefas_Status(status);
-		if (!buscaStatus.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O status informado não existe.");
+		responseModel response = new responseModel();
+		response.setMensagem("O status informado não existe.");
+		List<UsuarioEntity> buscaStatus = repository.findByListaDeTarefas_Status(status);
+		if (buscaStatus.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(buscaStatus);
 	}
 	
 	public ResponseEntity<?> buscaPorPrioridade(String prioridade) {
-		Optional<List<UsuarioEntity>> buscaPrioridade = repository.findByListaDeTarefas_Prioridade(prioridade);
-		if (!buscaPrioridade.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("A prioridade informada não existe.");
+		responseModel response = new responseModel();
+		response.setMensagem("A prioridade informada não existe.");
+		List<UsuarioEntity> buscaPrioridade = repository.findByListaDeTarefas_Prioridade(prioridade);
+		if (buscaPrioridade.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(buscaPrioridade);
 	}

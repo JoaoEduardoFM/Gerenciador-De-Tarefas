@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import com.br.tarefas.service.tarefasService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/tarefas")
@@ -65,5 +67,13 @@ public class TarefasController {
 	@DeleteMapping("/deleta/{id}")
 	private void deletaRegistro(BigInteger id) {
 		tarefasSevice.DeletaRegistro(id);
+	}
+	
+	@ApiOperation(
+			value = "Atualiza Status", 
+			notes = "Atualiza status da tarefa")
+	@PatchMapping("/status/{id}")
+	private ResponseEntity<?> atualizaStatus(BigInteger id, Boolean status, @ApiIgnore TarefaEntity entity) {
+		return tarefasSevice.atualizaStatus(id, status, entity);
 	}
 }

@@ -10,14 +10,14 @@ import com.br.tarefas.model.entity.UsuarioEntity;
 
 public interface UsuarioRepository extends JpaRepository<UsuarioEntity, BigInteger>{
 	
-	public Optional<List<UsuarioEntity>> findByListaDeTarefas_Titulo(String titulo);
+	public List<UsuarioEntity> findByListaDeTarefas_Titulo(String titulo);
 	
-	public Optional<List<UsuarioEntity>> findByListaDeTarefas_Descricao(String descricao);
+	public List<UsuarioEntity> findByListaDeTarefas_Descricao(String descricao);
 	
-	public Optional<List<UsuarioEntity>> findByListaDeTarefas_DataConclusao(String dataConclusao);
+	public List<UsuarioEntity> findByListaDeTarefas_DataConclusao(String dataConclusao);
 	
-	public Optional<List<UsuarioEntity>> findByListaDeTarefas_Status(Boolean status);
+	public List<UsuarioEntity> findByListaDeTarefas_Status(Boolean status);
 	
-	public Optional<List<UsuarioEntity>> findByListaDeTarefas_Prioridade(String prioridade);
+	public List<UsuarioEntity> findByListaDeTarefas_Prioridade(String prioridade);
 
 }

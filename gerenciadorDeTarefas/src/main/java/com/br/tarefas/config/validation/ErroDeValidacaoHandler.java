@@ -1,52 +1,69 @@
 package com.br.tarefas.config.validation;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
 	
-	@Autowired
-	private MessageSource messageSource; //classe que ajuda a pegar mensagens de erro, de acordo com o idioma da requisicao
-	
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST) //fala que deve retornar 400, se nao tivesse feito isso, o spring iria entender que tratamos o erro, e iria retornar 200
-	@ExceptionHandler(MethodArgumentNotValidException.class) //diz para o spring que o metodo abaixo deve ser chamado quando houver alguma exeção dentro de algum controller
-	public List<ErroBody> handleBadRequest(MethodArgumentNotValidException exception) {
-		List<ErroBody> dto = new ArrayList<ErroBody>();
-		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+	@ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class,
+            NoSuchElementException.class, EntityNotFoundException.class })
+    public ResponseEntity<Object> handleBadRequestException(Exception ex) {
+        return new ResponseEntity<>(getErrorMap(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(value = { MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    	ResponseRest response = new ResponseRest();
+		List<String> erros = ex.getBindingResult().getFieldErrors().stream().map(FieldError::getDefaultMessage)
+				.collect(Collectors.toList());	
 		
-		fieldErrors.forEach(e -> {
-			String mensagem = messageSource.getMessage(e, LocaleContextHolder.getLocale());
-			ErroBody erro = new ErroBody(e.getField(), mensagem);
-			dto.add(erro);
-		});
-		return dto;
-	}
-	
-	@ExceptionHandler(IllegalAccessException.class)
-    public ResponseEntity<String> handleIllegalAccessException(IllegalAccessException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro de acesso ilegal.");
+		for (String listaErro : erros) {
+			response.setMessage(listaErro);
+		}
+
+		return new ResponseEntity<>(erros, HttpStatus.BAD_REQUEST);		
     }
-	
-	@ExceptionHandler(InvocationTargetException.class)
-    public ResponseEntity<String> handleInvocationTargetException(InvocationTargetException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocorreu um erro durante a invocação do método.");
+
+    @ExceptionHandler(value = { DataAccessException.class })
+    public ResponseEntity<Object> handleDataAccessException(Exception ex) {
+        return new ResponseEntity<>(getErrorMap("Erro ao acessar o banco de dados"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-	
-	
-	/* esta classe funciona como uma espécie de interceptador, 
-	 * sempre que tiver um erro, o spring virá nela para ser tratadp */
-	
+
+    @ExceptionHandler(value = { ResourceAccessException.class, HttpServerErrorException.class })
+    public ResponseEntity<Object> handleExternalServiceException(Exception ex) {
+        return new ResponseEntity<>(getErrorMap("Erro ao acessar serviço externo"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = { NoHandlerFoundException.class })
+    public ResponseEntity<Object> handleNotFoundException(Exception ex) {
+        return new ResponseEntity<>(getErrorMap("Recurso não encontrado"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = { Exception.class })
+    public ResponseEntity<Object> handleGenericException(Exception ex) {
+        return new ResponseEntity<>(getErrorMap("Erro interno do servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private Map<String, String> getErrorMap(String message) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("error", message);
+        return errorMap;
+    }
 }
